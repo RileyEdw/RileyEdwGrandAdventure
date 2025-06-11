@@ -1,6 +1,5 @@
 /* When someone enters your game, you only want them to see the opening and the option buttons. The code below will use the display property to hide certain parts of the story. Remove the comments from the code below when you're ready for that step!*/
-
-/* 
+/* https://cssgridgarden.com/ USE THIS FOR HELP ON GRID
 .option-one-screen, 
 .option-two-screen, 
 .option-one-end, 
@@ -20,21 +19,25 @@ body {
 /* Style the body with a background color or image if desired */
 body {
     font-family: Arial, sans-serif;
-    background-color: #f0f0f0;
+    background-color: black;
     text-align: center;
     padding: 20px;
+    color:white
 }
 
-/* Style the title of your story */
-.title {
-    font-size: 24px;
-    font-weight: bold;
-    margin-bottom: 20px;
+.inventory{
+    float:left;
+    margin-left:20px
+}
+.stats{
+    float:right;
+    margin-right: 20px
+
 }
 
 /* Style the story opening container */
 .story-opening {
-    background-color: #fff;
+    background-color: black;
     border: 1px solid #ccc;
     padding: 20px;
     border-radius: 10px;
@@ -53,7 +56,6 @@ body {
     font-size: 20px;
     margin-bottom: 20px;
 }
-
 /* Style the buttons container */
 .buttons {
     margin: 20px;
@@ -76,34 +78,3 @@ button:hover {
     background-color: #0056b3;
 }
 
-/* Style the screens for option one and option two */
-.option-one-screen,
-.option-two-screen,
-.option-one-end,
-.option-two-end {
-    background-color: #fff;
-    border: 1px solid #ccc;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-    margin-bottom: 10px;
-}
-
-/* Style the images in the screens */
-.option-one-screen img,
-.option-two-screen img,
-.option-one-end img,
-.option-two-end img {
-    max-width: 100%;
-    height: auto;
-    margin-bottom: 10px;
-}
-
-/* Style the text in the screens */
-.option-one-screen h1,
-.option-two-screen h1,
-.option-one-end h1,
-.option-two-end h1 {
-    font-size: 20px;
-    margin-bottom: 20px;
-}

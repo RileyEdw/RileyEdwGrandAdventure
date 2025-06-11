@@ -1,5 +1,12 @@
 // Declare variables below to save the different divs of your story.
-
+let MaxHP = 30;
+let HP = 30;
+let MaxMP = 10;
+let MP = 10;
+let Attack = 5;
+let Defense = 5;
+let Magic = 5;
+let Bucks = 20;
 
 
 
