@@ -46,8 +46,9 @@ body {
 
 /* Style the story image */
 .story-opening img {
-    max-width: 100%;
+    max-width: 50%;
     height: auto;
+    max-height: 500px;
     margin-bottom: 10px;
 }
 
@@ -58,9 +59,12 @@ body {
 }
 /* Style the buttons container */
 .buttons {
+    width: 50%;
     margin: 20px;
+    display: grid;
+    margin-left: 25%
 }
-
+.inactive{background-color: black; color: black}
 /* Style the option buttons */
 button {
     font-size: 16px;
@@ -77,4 +81,8 @@ button {
 button:hover {
     background-color: #0056b3;
 }
+.option-one{grid-area: 1/2/1/2; width: 150px}
+.option-two{grid-area: 2/1/2/1; width: 150px}
+.option-three{grid-area: 2/3/2/3; width: 150px}
+.option-four{grid-area: 3/2/3/2; width: 150px}
 
