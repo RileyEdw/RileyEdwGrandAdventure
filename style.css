@@ -27,7 +27,8 @@ body {
 
 .inventory{
     float:left;
-    margin-left:20px
+    margin-left:20px;
+    margin-top: 100px
 }
 .stats{
     float:right;

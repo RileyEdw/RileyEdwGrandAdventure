@@ -15,9 +15,14 @@ let button4 = document.querySelector(".option-four");
 let image = document.querySelector(".imageStatus");
 let text = document.querySelector(".descText");
 let gotAKey = false;
+keydisplay = document.querySelector(".keyslot")
 let gotRepellent = false;
+repeldisplay = document.querySelector(".repelslot");
+let gotWaffle = false;
+waffledisplay = document.querySelector(".waffleslot")
 let goblinBeaten = false;
 let bucks = 0;
+buckdisplay = document.querySelector(".moneycount")
 let debt = false;
 let flattened = false;
 function resetGame(){gotAKey = false;
@@ -26,7 +31,7 @@ goblinBeaten = false;
 bucks = 0;
 debt = false;
 flattened = false; place = "entrance"; 
-text.innerHTML="The Depths lie before you, rumored for great danger and treasure...";
+text.innerHTML="The Depths lie before you, rumored for great danger and treasure... <br> By the way, a Not Right Now means there is no option available for that button for that decision.";
 image.src= "images/caveEntrance.jpg";
     button1.innerHTML = "LET'S GO IN!";
     button2.innerHTML = "Not Right Now";
@@ -37,17 +42,7 @@ function endGame(){button1.innerHTML = "Reset Game.";
     button3.innerHTML ="Made by Riley Edwards";
     button4.innerHTML ="Made with HTML, CSS, and JS"
 }
-
-
-
-
-
-
-
-
-// When you're ready to make event handlers, uncomment the code below. 
-//  - Then fill in the blanks with the correct variables.
-
+function updateMoney(){buckdisplay.innerHTML = (bucks) + " bucks"}
 
 button1.addEventListener('click', function(){
 if(place == "ending"){resetGame(); return};
@@ -70,7 +65,13 @@ if(place == "evilgoblin"){text.innerHTML="The goblin readies himself. \"Let's do
     button4.innerHTML = "Not Right Now"
     return
 }
-if(place == "RPSgoblin"){text.innerHTML="The goblin used ROCK! You won! \"Aw, man. Well, you won fair and circle. You can go...\""}
+if(place == "RPSgoblin"){text.innerHTML="The goblin used ROCK! You won! \"Aw, man. Well, you won fair and circle. You can go...\"";
+    place = "chillgoblin";
+    button1.innerHTML ="Keep Going Forward.";
+    button2.innerHTML ="Ask who he is.";
+    button3.innerHTML ="Ask to borrow some cash.";
+    button4.innerHTML ="Go back to the Door";
+}
 });
 
 button2.addEventListener('click', function(){
@@ -94,21 +95,44 @@ else if(place == "store" && bucks >= 10){text.innerHTML="You buy some Dragon Rep
 if(place == "evilgoblin"){text.innerHTML="\"My name is Rocky, and I don't know how to read.\", he says."}
 if(place == "RPSgoblin"){text.innerHTML= "The goblin also used ROCK. It's a tie! Go again!"}
 });
+/*BUTTON 3*/
 button3.addEventListener('click', function(){
 if(place == "entrance"){}
 if(place == "greatdoor" && goblinBeaten == false){text.innerHTML="You see a mischievous goblin. He says: \"Wait. In order to pass, you need to beat me at rock-paper-scissors.\"";
     place = "evilgoblin";
     image.src="images/goblin.png"
     button1.innerHTML = "Play the Game";
-    button2.innerHTML = "Ask who he is?";
+    button2.innerHTML = "Ask who he is.";
     button3.innerHTML = "Not Right Now";
     button4.innerHTML = "Go back to the Door";
     return
 }
-if(place == "RPSgoblin"){text.innerHTML="The goblin used ROCK! You lost... You have to do the goblin's laundry, and it is stinky. So stinky, in fact, that you lose all feeling in your nose. The End.";
-    place="ending";
-    image.src="images/laundry.png"
+if(place == "greatdoor" && goblinBeaten == true){text.innerHTML="You pass the goblin again. \"What's good, buddy?\"";
+    place = "chillgoblin";
+    image.src="images/goblin.png"
+    button1.innerHTML ="Keep Going Forward.";
+    button2.innerHTML ="Ask who he is.";
+    button3.innerHTML ="Ask to borrow some cash.";
+    button4.innerHTML ="Go back to the Door";
+    return
 }
+if(place == "store" && bucks <= 50){text.innerHTML="You don't have enough money."
+}
+if(place == "store" && gotAKey == true){text.innerHTML="You already have the Golden Key."}
+else if(place == "store" && bucks >= 50){text.innerHTML="You buy the Golden Key for 50 bucks."}
+    gotAKey = true;
+    bucks -= 50
+if(place == "RPSgoblin"){text.innerHTML="The goblin used ROCK! You lost... You have to do the goblin's laundry, and it is stinky. <br>So stinky, in fact, that you lose all feeling in your nose. The End.";
+    place="ending";
+    image.src="images/laundry.png";
+    endGame();
+}
+if(place == "chillgoblin" && debt == false){text.innerHTML="\"Sure, here you go.\" The goblin hands you 10 bucks.";
+    debt = true;
+    bucks += 10;
+    updateMoney();
+}
+if(place == "chillgoblin" && debt == true){text.innerHTML="\"You already owe me 10 bucks. Go get a job, I dunno.\""}
 });
 button4.addEventListener('click', function(){
 if(place == "entrance"){text.innerHTML= "A boring but reasonable choice. You go to work your 9-5 for 10 years before being replaced by AI. The End.";
@@ -116,9 +140,33 @@ if(place == "entrance"){text.innerHTML= "A boring but reasonable choice. You go 
     image.src="images/office.jpg";
     endGame();
 };
-if(place == "greatdoor"){text.innerHTML="The door fires an Ultra Beam at you. You are sent flying all the way to France. The End.";
+if(place == "greatdoor"){text.innerHTML="The door is NOT going to take that. The door fires an Ultra Beam at you. You are sent flying all the way to France. The End.";
     place ="ending";
     image.src="images/france.jpg"
     endGame()
+};
+if(place == "store"){text.innerHTML="You go back to the Door.";
+    image.src="images/caveDoor.jpg";
+    place = "greatdoor";
+    button1.innerHTML = "Open The Door";
+    button2.innerHTML = "Go to the West";
+    button3.innerHTML = "Go to the East";
+    button4.innerHTML = "Break Down the Door!";
+};
+if(place == "evilgoblin"){text.innerHTML="You go back to the Door.";
+    image.src="images/caveDoor.jpg";
+    place = "greatdoor";
+    button1.innerHTML = "Open The Door";
+    button2.innerHTML = "Go to the West";
+    button3.innerHTML = "Go to the East";
+    button4.innerHTML = "Break Down the Door!";
+};
+if(place == "chillgoblin"){text.innerHTML="You go back to the Door.";
+    image.src="images/caveDoor.jpg";
+    place = "greatdoor";
+    button1.innerHTML = "Open The Door";
+    button2.innerHTML = "Go to the West";
+    button3.innerHTML = "Go to the East";
+    button4.innerHTML = "Break Down the Door!";
 };
 });
