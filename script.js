@@ -19,18 +19,29 @@ keydisplay = document.querySelector(".keyslot")
 let gotRepellent = 1;
 repeldisplay = document.querySelector(".repelslot");
 let gotWaffle = 1;
-waffledisplay = document.querySelector(".waffleslot")
+waffledisplay = document.querySelector(".waffleslot");
+let fireballKnown = false;
+firedisplay = document.querySelector(".fireballslot");
 let goblinBeaten = false;
-let bucks = 2;
-buckdisplay = document.querySelector(".moneyCount")
+let bucks = 3;
+buckdisplay = document.querySelector(".moneyCount");
 let debt = false;
 let flattened = false;
-function resetGame(){gotAKey = 1;
+let job = false;
+function resetGame(){gotAKey = false;
 gotRepellent = 1;
 gotWaffle = 1;
 goblinBeaten = false;
-bucks = 2;
+bucks = 3;
+updateMoney();
+keydisplay.innerHTML="";
+repeldisplay.innerHTML="";
+waffledisplay.innerHTML="";
+firedisplay.innerHTML="";
 debt = false;
+job = false;
+idol = false;
+fireballKnown = false;
 flattened = false; place = "entrance"; 
 text.innerHTML="The Depths lie before you, rumored for great danger and treasure... <br> By the way, a Not Right Now means there is no option available for that button for that decision.";
 image.src= "images/caveEntrance.jpg";
@@ -44,10 +55,13 @@ function endGame(){button1.innerHTML = "Reset Game.";
     button4.innerHTML ="Made with HTML, CSS, and JS"
 }
 function updateMoney(){buckdisplay.innerHTML = (bucks) + " bucks"}
+function checkSkills(){if(fireballKnown == true){button4.innerHTML = "Cast FIREBALL at the door!"};
+if(flattened == true && gotAKey == false){button1.innerHTML = "Slip under the Door."};
+if(gotAKey == true){button1.innerHTML = "UNLOCK THE DOOR."}}
 
 button1.addEventListener('click', function(){
 if(place == "ending"){resetGame(); return};
-if(place == "entrance"){text.innerHTML= "You walk into the cave, and see a path to the west, east, as well as a door.";
+if(place == "entrance"){text.innerHTML= "You walk into the cave, and see a path to the west, east, as well as a door. <br>You feel like you're being watched...";
     image.src="images/caveDoor.jpg";
     place = "greatdoor";
     button1.innerHTML = "Open The Door";
@@ -92,6 +106,7 @@ if(place == "wafflehouse" && bucks >= 8){text.innerHTML="You buy a waffle for 8 
     bucks -= 8;
     updateMoney()
 }
+if(place == "temple"){text.innerHTML="You grab the 20 bucks. Suddenly, a boulder drops from the ceiling, and throws you outside.<br>You aren't badly hurt, just as flat as paper. You did lose the 20 bucks, though."}
 });
 /*BUTTON 2, LEFT */
 button2.addEventListener('click', function(){
@@ -122,9 +137,24 @@ if(place == "fork"){text.innerHTML="You follow the path to a local Waffle House.
     button1.innerHTML ="Buy a Waffle for 8 bucks."
     button2.innerHTML ="Ask for a job."
     button3.innerHTML ="Ask him to teach you magic."
-    button4.innerHTML ="Leave the Waffle House"
+    button4.innerHTML ="Leave the Waffle House."
     image.src="images/wafflehouse.jpg"
     return
+}
+if(place == "wafflehouse" && job == false){text.innerHTML="You are hired! You serve a couple customers until an angry woman comes up.<br> You start to tell her about the Waffle Charity Program, and she says: \"Just put the fries in the bag.\"";
+    place = "job";
+    button1.innerHTML = "Not Right Now.";
+    button2.innerHTML = "ACCEPT.";
+    button3.innerHTML = "REFUSE.";
+    button4.innerHTML = "Not Right Now.";
+    return
+}
+if(place == "wafflehouse" && job == true){text.innerHTML="You were already fired from here."}
+if(place == "job"){text.innerHTML = "You put the fries in the bag. You continue to serve customers very well, and work your way<br> up the corporate ladder over 40 years. Eventually, you become the CEO of Waffle House. The End.";
+    endGame()
+    place = "ending";
+    image.src="images/CEOoffice.jpg";
+    buckdisplay.innerHTML = "2.4 Million Dollars."
 }
 });
 /*BUTTON 3, RIGHT*/
@@ -159,15 +189,41 @@ if(place == "RPSgoblin"){text.innerHTML="The goblin used ROCK! You lost... You h
     image.src="images/laundry.png";
     endGame();
 }
-if(place == "chillgoblin" && debt == false){text.innerHTML="\"Sure, here you go.\" The goblin hands you 10 bucks.";
+if(place == "chillgoblin" && debt == false){text.innerHTML="\"Sure, here you go.\" The goblin hands you 5 bucks.";
     debt = true;
-    bucks += 10;
+    bucks += 5;
     updateMoney();
     console.log(bucks)
     return
 }
 if(place == "chillgoblin" && debt == true){text.innerHTML="\"You already owe me 10 bucks. Go get a job, I dunno.\""}
-if(place == "wafflehouse"){text.innerHTML="\"Okay, sure.\""}
+if(place == "fork"){text.innerHTML="You enter into an ancient temple. You can see 20 bucks folded into the shape of a golden idol.";
+    place == "temple";
+    button1.innerHTML = "Grab it!"
+    button2.innerHTML = "Missing Required Item."
+    if(gotRepellent==2){button2.innerHTML = "Swap the Repellent for the Idol."}
+    button3.innerHTML = "Missing Required Item."
+    if(gotWaffle==2){button3.innerHTML = "Swap the Waffle for the Idol."}
+    button4.innerHTML = "Leave the Temple."
+    image.src="images/idol.jpg"
+    return
+}
+if(place == "wafflehouse" && fireballKnown == false){text.innerHTML="\"Okay, sure.\" Jacob the Wizard Parrot teaches you how to cast basic fire magic.";
+    fireballKnown = true;
+    firedisplay.innerHTML = "Fire Magic";
+    return}
+if(place == "wafflehouse" && fireballKnown == true){text.innerHTML="\"If I teach you any more, you will legally be my apprentice, <br> and that has a bunch of complex forms you need to fill out.\""}
+if(place == "job"){text.innerHTML = "You tell the angry woman to GET OUT! <br>You are fired soon after, but still paid 10 bucks for your work.";
+    job = true;
+    bucks += 10;
+    updateMoney()
+    place = "wafflehouse"
+    button1.innerHTML ="Buy a Waffle for 8 bucks."
+    button2.innerHTML ="Ask for a job."
+    button3.innerHTML ="Ask him to teach you magic."
+    button4.innerHTML ="Leave the Waffle House"
+    return;
+}
 });
 /* BUTTON 4 */
 button4.addEventListener('click', function(){
@@ -176,34 +232,38 @@ if(place == "entrance"){text.innerHTML= "A boring but reasonable choice. You go 
     image.src="images/office.jpg";
     endGame();
 };
-if(place == "greatdoor"){text.innerHTML="The door is NOT going to tolerate that. The door fires an Ultra Beam at you. You are sent flying all the way to France. The End.";
+if(place == "greatdoor" && fireballKnown == false){text.innerHTML="The door is NOT going to tolerate that. The door fires an Powerful Beam at you. You are sent flying all the way to France. The End.";
     place ="ending";
     image.src="images/france.jpg"
     endGame()
 };
-if(place == "store"){text.innerHTML="You go back to the Door.";
+if(place == "greatdoor" && fireballKnown == true){text.innerHTML="The door sees your spell and casts a barrier to block it."};
+if(place == "store"){text.innerHTML="You go back to the Door.<br> You feel like you're being watched.";
     image.src="images/caveDoor.jpg";
     place = "greatdoor";
     button1.innerHTML = "Open The Door";
     button2.innerHTML = "Go to the West";
     button3.innerHTML = "Go to the East";
     button4.innerHTML = "Break Down the Door!";
+    checkSkills()
 };
-if(place == "evilgoblin"){text.innerHTML="You go back to the Door.";
+if(place == "evilgoblin"){text.innerHTML="You go back to the Door.<br> You feel like you're being watched.";
     image.src="images/caveDoor.jpg";
     place = "greatdoor";
     button1.innerHTML = "Open The Door";
     button2.innerHTML = "Go to the West";
     button3.innerHTML = "Go to the East";
     button4.innerHTML = "Break Down the Door!";
+    checkSkills()
 };
-if(place == "chillgoblin"){text.innerHTML="You go back to the Door.";
+if(place == "chillgoblin"){text.innerHTML="You go back to the Door.<br> You feel like you're being watched.";
     image.src="images/caveDoor.jpg";
     place = "greatdoor";
     button1.innerHTML = "Open The Door";
     button2.innerHTML = "Go to the West";
     button3.innerHTML = "Go to the East";
     button4.innerHTML = "Break Down the Door!";
+    checkSkills()
 };
 if(place == "fork"){text.innerHTML="You pass the goblin again. \"What's good, buddy?\"";
     place = "chillgoblin";
