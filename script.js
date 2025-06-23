@@ -28,6 +28,7 @@ buckdisplay = document.querySelector(".moneyCount");
 let debt = false;
 let flattened = false;
 let job = false;
+let idol = false;
 function resetGame(){gotAKey = false;
 gotRepellent = 1;
 gotWaffle = 1;
@@ -55,9 +56,17 @@ function endGame(){button1.innerHTML = "Reset Game.";
     button4.innerHTML ="Made with HTML, CSS, and JS"
 }
 function updateMoney(){buckdisplay.innerHTML = (bucks) + " bucks"}
-function checkSkills(){if(fireballKnown == true){button4.innerHTML = "Cast FIREBALL at the door!"};
+function returnToDoor(){text.innerHTML="You go back to the Door.<br> You feel like you're being watched.";
+    image.src="images/caveDoor.jpg";
+    place = "greatdoor";
+    button1.innerHTML = "Open The Door";
+    button2.innerHTML = "Go to the West";
+    button3.innerHTML = "Go to the East";
+    button4.innerHTML = "Break Down the Door!";
+if(fireballKnown == true){button4.innerHTML = "Cast FIREBALL at the door!"};
 if(flattened == true && gotAKey == false){button1.innerHTML = "Slip under the Door."};
-if(gotAKey == true){button1.innerHTML = "UNLOCK THE DOOR."}}
+if(gotAKey == true){button1.innerHTML = "UNLOCK THE DOOR."}
+}
 
 button1.addEventListener('click', function(){
 if(place == "ending"){resetGame(); return};
@@ -70,6 +79,26 @@ if(place == "entrance"){text.innerHTML= "You walk into the cave, and see a path 
     button4.innerHTML = "Break Down the Door!";
     return
 };
+if(place == "greatdoor" && flattened == true){text.innerHTML = "You slip under the door and see the Chest of Unlimited Gold!<br>Unfortunately, you can't take it back under the door, as it's too big. You don't feel like you're being watched.";
+    place = "behinddoor";
+    image.src="images/treasure.jpg"
+    button1.innerHTML = "Break down the Door!"
+    button2.innerHTML = "Look for another exit."
+    button3.innerHTML = "Not Right Now."
+    if(fireballKnown== true){button3.innerHTML = "Cast Fireball on the door."}
+    button4.innerHTML = "Slip back under the Door."
+    return
+}
+if(place == "behinddoor"){text.innerHTML = "You can't do much to it, due to being as flat as paper. <br>The door doesn't react at all, though."}
+if(place == "store"){text.innerHTML = "You move forward and see a large red dragon flying in a huge room ahead. The wind is intense.";
+    place = "dragonentry";
+    button1.innerHTML = "Approach the Dragon."
+    button2.innerHTML = "Not Right Now."
+    if(gotWaffle==2){button2.innerHTML = "Throw in a Waffle!"}
+    button3.innerHTML = "Not Right Now."
+    if(fireballKnown == true){button3.innerHTML = "Cast FIREBALL!"}
+    button4.innerHTML = "Go back to the Store."
+}
 if(place == "greatdoor" && gotAKey == true){text.innerHTML="VICTORY"}
 if(place == "greatdoor" && gotAKey == false){text.innerHTML="The door is locked, with a Golden Padlock. There is a thin gap under the door, though..."}
 if(place == "evilgoblin"){text.innerHTML="The goblin readies himself. \"Let's do this. If you lose, you have to do my laundry!\"";
@@ -100,13 +129,23 @@ if(place == "chillgoblin"){text.innerHTML="The path leads out of the cave and to
 }
 if(place == "wafflehouse" && bucks <= 8){text.innerHTML="You don't have enough money."}
 if(place == "wafflehouse" && bucks >= 8 && gotWaffle > 1){text.innerHTML="\"I'm sorry. Due to shortages, we are only allowing one waffle per person today\"<br> says Jacob the Parrot."}
-if(place == "wafflehouse" && bucks >= 8){text.innerHTML="You buy a waffle for 8 bucks. <br> You're not hungry, though, so you put it in your pocket."
+if(place == "wafflehouse" && bucks >= 8 && gotWaffle == 1){text.innerHTML="You buy a waffle for 8 bucks. <br> You're not hungry, though, so you put it in your pocket."
     gotWaffle = 2;
-    repeldisplay.innerHTML = "A Tasty Waffle";
+    waffledisplay.innerHTML = "A Tasty Waffle";
     bucks -= 8;
     updateMoney()
 }
-if(place == "temple"){text.innerHTML="You grab the 20 bucks. Suddenly, a boulder drops from the ceiling, and throws you outside.<br>You aren't badly hurt, just as flat as paper. You did lose the 20 bucks, though."}
+if(place == "temple"){text.innerHTML="You grab the 20 bucks. Suddenly, a boulder drops from the ceiling, crushing you and rolling outside.<br>You aren't badly hurt, but you're as flat as paper. You did lose the 20 bucks, though.";
+    place = "fork";
+    flattened = true;
+    idol = true;
+    image.src="images/forkRoad.jpg"
+    button1.innerHTML ="Not Right Now.";
+    button2.innerHTML ="Go Left."
+    button3.innerHTML ="Go Right."
+    button4.innerHTML ="Go back to the Cave."
+    return
+}
 });
 /*BUTTON 2, LEFT */
 button2.addEventListener('click', function(){
@@ -120,15 +159,17 @@ if(place == "greatdoor"){text.innerHTML= "You see a talking rock named Jehanna r
     button4.innerHTML = "Go back to the Door";
     return
 }
+if(place == "behinddoor"){text.innerHTML="It looks like there's a hole in the ceiling, but it's just a glowing crystal formation."}
 if(place == "store" && bucks <= 15){text.innerHTML="You don't have enough money."
 }
 if(place == "store" && bucks >= 15 && gotRepellent > 1){text.innerHTML="No more Dragon Repellent. You bought the last can earlier."}
 else if(place == "store" && bucks >= 15){text.innerHTML="You buy some Dragon Repellent for 15 bucks."
     gotRepellent = 2;
-    repeldisplay.innerHTML = "Can of Dragon Repellent"
+    repeldisplay.innerHTML = "Dragon Repellent"
     bucks -= 15
     updateMoney()
 }
+if(place == "dragonentry" && gotWaffle == 2){text.innerHTML="You throw the waffle into the dragon's room. It swoops down and starts eating it!<br>It's distracted!"}
 if(place == "evilgoblin"){text.innerHTML="\"My name is Rocky, and I don't know how to read.\", he says."}
 if(place == "RPSgoblin"){text.innerHTML= "The goblin also used ROCK. It's a tie! Go again!"}
 if(place == "chillgoblin"){text.innerHTML="\"My name is Rocky, and I don't know how to read.\", he says."}
@@ -156,6 +197,19 @@ if(place == "job"){text.innerHTML = "You put the fries in the bag. You continue 
     image.src="images/CEOoffice.jpg";
     buckdisplay.innerHTML = "2.4 Million Dollars."
 }
+if(place == "temple" && gotRepellent==2){text.innerHTML ="You take out the can of Dragon Repellent, and then swap it for the 20 bucks.<br> As you're leaving, a boulder rolls down and blocks the exit.";
+    place = "fork";
+    bucks += 20
+    gotRepellent = 3
+    repeldisplay.innerHTML=""
+    updateMoney()
+    idol = true;
+    image.src="images/forkRoad.jpg"
+    button1.innerHTML ="Not Right Now.";
+    button2.innerHTML ="Go Left."
+    button3.innerHTML ="Go Right."
+    button4.innerHTML ="Go back to the Cave."
+    return}
 });
 /*BUTTON 3, RIGHT*/
 button3.addEventListener('click', function(){
@@ -184,6 +238,12 @@ if(place == "store" && bucks >= 50 && gotAKey == false){text.innerHTML="You buy 
     gotAKey = true;
     keydisplay.innerHTML = "The Golden Key";
     bucks -= 50}
+if(place == "behinddoor" && fireballKnown == true){text.innerHTML="You cast FIREBALL on the door, and it shatters into pieces! <br>The magical power of the door is left there, and you absorb it. You realize every type of magic that there is.<br>For many years, stories are told about you, the Legendary Mage! The End.";
+    image.src="images/wizard.jpg";
+    place="ending";
+    firedisplay.innerHTML="All Magic"
+    endGame();
+}
 if(place == "RPSgoblin"){text.innerHTML="The goblin used ROCK! You lost... You have to do the goblin's laundry, and it is stinky. <br>So stinky, in fact, that you lose all feeling in your nose. The End.";
     place="ending";
     image.src="images/laundry.png";
@@ -197,8 +257,8 @@ if(place == "chillgoblin" && debt == false){text.innerHTML="\"Sure, here you go.
     return
 }
 if(place == "chillgoblin" && debt == true){text.innerHTML="\"You already owe me 10 bucks. Go get a job, I dunno.\""}
-if(place == "fork"){text.innerHTML="You enter into an ancient temple. You can see 20 bucks folded into the shape of a golden idol.";
-    place == "temple";
+if(place == "fork" && idol == false){text.innerHTML="You enter into an ancient temple. You can see 20 bucks folded into the shape of a golden idol.";
+    place = "temple";
     button1.innerHTML = "Grab it!"
     button2.innerHTML = "Missing Required Item."
     if(gotRepellent==2){button2.innerHTML = "Swap the Repellent for the Idol."}
@@ -208,6 +268,7 @@ if(place == "fork"){text.innerHTML="You enter into an ancient temple. You can se
     image.src="images/idol.jpg"
     return
 }
+if(place == "fork" && idol == true){text.innerHTML="There's a huge boulder covering the entrance. I wonder who caused that to show up."}
 if(place == "wafflehouse" && fireballKnown == false){text.innerHTML="\"Okay, sure.\" Jacob the Wizard Parrot teaches you how to cast basic fire magic.";
     fireballKnown = true;
     firedisplay.innerHTML = "Fire Magic";
@@ -224,6 +285,20 @@ if(place == "job"){text.innerHTML = "You tell the angry woman to GET OUT! <br>Yo
     button4.innerHTML ="Leave the Waffle House"
     return;
 }
+if(place == "temple" && gotWaffle==2){text.innerHTML ="You take a bite out of the waffle to adjust the weight, and then swap it for the 20 bucks.<br> As you're leaving, a boulder rolls down and blocks the exit.";
+    place = "fork";
+    bucks += 20
+    gotWaffle = 3
+    waffledisplay.innerHTML=""
+    updateMoney()
+    idol = true;
+    image.src="images/forkRoad.jpg"
+    button1.innerHTML ="Not Right Now.";
+    button2.innerHTML ="Go Left."
+    button3.innerHTML ="Go Right."
+    button4.innerHTML ="Go back to the Cave."
+    return
+}
 });
 /* BUTTON 4 */
 button4.addEventListener('click', function(){
@@ -238,33 +313,10 @@ if(place == "greatdoor" && fireballKnown == false){text.innerHTML="The door is N
     endGame()
 };
 if(place == "greatdoor" && fireballKnown == true){text.innerHTML="The door sees your spell and casts a barrier to block it."};
-if(place == "store"){text.innerHTML="You go back to the Door.<br> You feel like you're being watched.";
-    image.src="images/caveDoor.jpg";
-    place = "greatdoor";
-    button1.innerHTML = "Open The Door";
-    button2.innerHTML = "Go to the West";
-    button3.innerHTML = "Go to the East";
-    button4.innerHTML = "Break Down the Door!";
-    checkSkills()
-};
-if(place == "evilgoblin"){text.innerHTML="You go back to the Door.<br> You feel like you're being watched.";
-    image.src="images/caveDoor.jpg";
-    place = "greatdoor";
-    button1.innerHTML = "Open The Door";
-    button2.innerHTML = "Go to the West";
-    button3.innerHTML = "Go to the East";
-    button4.innerHTML = "Break Down the Door!";
-    checkSkills()
-};
-if(place == "chillgoblin"){text.innerHTML="You go back to the Door.<br> You feel like you're being watched.";
-    image.src="images/caveDoor.jpg";
-    place = "greatdoor";
-    button1.innerHTML = "Open The Door";
-    button2.innerHTML = "Go to the West";
-    button3.innerHTML = "Go to the East";
-    button4.innerHTML = "Break Down the Door!";
-    checkSkills()
-};
+if(place == "store"){returnToDoor()};
+if(place == "evilgoblin"){returnToDoor()};
+if(place == "chillgoblin"){returnToDoor()};
+if(place == "behinddoor"){returnToDoor()};
 if(place == "fork"){text.innerHTML="You pass the goblin again. \"What's good, buddy?\"";
     place = "chillgoblin";
     image.src="images/goblin.png"
@@ -275,6 +327,14 @@ if(place == "fork"){text.innerHTML="You pass the goblin again. \"What's good, bu
     return
 }
 if(place =="wafflehouse"){text.innerHTML="You return to the fork in the road."
+    place = "fork";
+    image.src="images/forkRoad.jpg"
+    button1.innerHTML ="Not Right Now.";
+    button2.innerHTML ="Go Left."
+    button3.innerHTML ="Go Right."
+    button4.innerHTML ="Go back to the Cave."
+}
+if(place =="temple"){text.innerHTML="You return to the fork in the road."
     place = "fork";
     image.src="images/forkRoad.jpg"
     button1.innerHTML ="Not Right Now.";
